@@ -1,0 +1,381 @@
+# 🐧 Linux Basics: Your First Commands (With Live Scenarios)
+
+> A beginner-friendly guide to essential Linux shell commands — explained with real-world DevOps scenarios.
+
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+![Bash](https://img.shields.io/badge/Bash-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white)
+![Beginner Friendly](https://img.shields.io/badge/Level-Beginner-brightgreen?style=for-the-badge)
+
+---
+
+## 📑 Table of Contents
+
+1. [Introduction to the Linux Shell](#-chapter-1-introduction-to-the-linux-shell)
+2. [Your First Linux Commands](#-chapter-2-your-first-linux-commands)
+3. [Command Flags](#-chapter-3-command-flags)
+4. [Keyboard Shortcuts](#-chapter-4-keyboard-shortcuts)
+5. [pwd — Print Working Directory](#-chapter-5-pwd)
+6. [ls — List Files and Folders](#-chapter-6-ls)
+7. [cat — Display File Contents](#-chapter-7-cat)
+8. [Tab Completion](#-chapter-8-tab-completion)
+9. [mkdir — Create Directories](#-chapter-9-mkdir)
+10. [cd — Change Directories](#-chapter-10-cd)
+11. [Redirecting Output (`>`)](#-chapter-11-redirecting-output-)
+12. [Summary Table](#-summary)
+
+---
+
+## 🔹 Chapter 1: Introduction to the Linux Shell
+
+When you open a Linux terminal, you interact with a program called the **Shell**.
+
+On Ubuntu, the default shell is **Bash** (Bourne Again Shell).
+
+> 💡 Think of the shell as your personal assistant — you type commands, the shell understands them, and the operating system performs the requested task.
+
+### Anatomy of a Prompt
+
+```
+root@abc123:~#
+```
+
+| Part | Meaning |
+|------|---------|
+| `root` | Current logged-in user |
+| `abc123` | Computer hostname |
+| `~` | Current directory (Home folder) |
+| `#` | Root user prompt |
+
+A normal user's prompt looks like this:
+
+```
+sourabh@devserver:~$
+```
+
+| Symbol | User Type |
+|--------|-----------|
+| `#` | Root user |
+| `$` | Normal user |
+
+### 🎬 Live Scenario
+
+You connect to an Azure Virtual Machine and see:
+
+```
+azureadmin@prod-web01:~$
+```
+
+Without asking anyone, you instantly know:
+
+- ✅ Logged in user = `azureadmin`
+- ✅ Machine name = `prod-web01`
+- ✅ Current folder = Home
+- ✅ Normal user (not root)
+
+---
+
+## 🔹 Chapter 2: Your First Linux Commands
+
+These commands are completely safe — they only **display information**.
+
+### 1️⃣ `whoami`
+
+Shows which user is currently logged in.
+
+```bash
+whoami
+```
+
+**Output:**
+```
+root
+```
+
+> 🎬 **Real World Example:** You SSH into a production server. Before deleting files, always verify who you are. If the output shows `devuser` instead of `root`, you cannot perform administrative tasks.
+
+---
+
+### 2️⃣ `hostname`
+
+Displays the computer's name.
+
+```bash
+hostname
+```
+
+**Output:**
+```
+prod-web01
+```
+
+> 🎬 **Live Scenario:** Your company has servers named `web01`, `web02`, `db01`, `db02`, `backup01`. Before restarting services, confirm you're on the correct machine with `hostname`.
+
+---
+
+### 3️⃣ `date`
+
+Shows the current system date and time.
+
+```bash
+date
+```
+
+**Output:**
+```
+Tue Jul 28 10:15:20 UTC 2026
+```
+
+> 🎬 **Live Scenario:** An application stopped working at 10:00 AM. Checking `date` confirms whether the server clock is accurate — a wrong clock can break logs, certificates, and scheduled tasks.
+
+---
+
+### 4️⃣ `uname -a`
+
+Displays kernel and system information.
+
+```bash
+uname -a
+```
+
+**Example Output:**
+```
+Linux prod-web01 6.8.0 x86_64 GNU/Linux
+```
+
+| Part | Description |
+|------|--------------|
+| `Linux` | Kernel name |
+| `prod-web01` | Hostname |
+| `6.8.0` | Kernel version |
+| `x86_64` | Architecture |
+| `GNU/Linux` | Operating system |
+
+> 🎬 **Live Scenario:** A vendor asks if your server is 32-bit or 64-bit. Running `uname -a` and seeing `x86_64` confirms it's 64-bit.
+
+---
+
+### 5️⃣ `echo`
+
+Prints text to the screen.
+
+```bash
+echo "Hello"
+```
+
+**Output:**
+```
+Hello
+```
+
+> 🎬 **Live Scenario:** Before writing a shell script, test a message with `echo "Deployment Started"`.
+
+---
+
+## 🔹 Chapter 3: Command Flags
+
+Flags change the behavior of a command.
+
+```bash
+uname          # Linux
+uname -s       # Linux  (explicit form)
+uname -a       # Linux prod-web01 6.8.0 x86_64 GNU/Linux (detailed info)
+```
+
+> 🎬 **Live Scenario:** During troubleshooting, support asks only for the kernel name. Use `uname -s` instead of `uname -a` since they only need `Linux`.
+
+---
+
+## 🔹 Chapter 4: Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl + C` | Stops a running command |
+| `Ctrl + L` | Clears the terminal screen (same as `clear`) |
+| `↑` (Up Arrow) | Recalls previous commands |
+
+> 🎬 **Live Scenario:** You accidentally started an endless process like `ping google.com`. Instead of closing the terminal, press `Ctrl + C`.
+>
+> Instead of retyping `sudo systemctl restart nginx`, press `↑` and hit **Enter**.
+
+---
+
+## 🔹 Chapter 5: `pwd`
+
+**P**rint **W**orking **D**irectory — shows where you currently are.
+
+```bash
+pwd
+```
+
+**Output:**
+```
+/root
+```
+
+> 🎬 **Live Scenario:** Before saving a configuration file, run `pwd`. If it shows `/var/www/html`, you know the file will be created in the web server directory.
+
+---
+
+## 🔹 Chapter 6: `ls`
+
+Lists files and folders.
+
+```bash
+ls          # current folder
+ls /        # root directory
+ls /etc     # configuration folder
+```
+
+> 🎬 **Live Scenario:** A web application seems missing. Running `ls /var/www/html` reveals `index.html`, `css`, `images`, `js` — confirming the app files exist.
+
+---
+
+## 🔹 Chapter 7: `cat`
+
+Displays a file's contents.
+
+```bash
+cat /etc/hostname
+```
+
+**Output:**
+```
+prod-web01
+```
+
+```bash
+cat /etc/os-release
+```
+
+**Output:**
+```
+Ubuntu 24.04 LTS
+```
+
+> 🎬 **Live Scenario:** A support engineer asks which Linux version you're using. Run `cat /etc/os-release` — no guessing required.
+
+---
+
+## 🔹 Chapter 8: Tab Completion
+
+Instead of typing the full path:
+
+```bash
+cat /etc/os-release
+```
+
+Type:
+
+```bash
+cat /et
+```
+
+Press **TAB** → it becomes `cat /etc/` → press **TAB** again to complete the filename.
+
+> 🎬 **Live Scenario:** For a long directory name like `terraform-production-environment-backup`, just type `cd ter`, press **Tab**, and Bash auto-completes it (or shows matches). Saves time and avoids typos.
+
+---
+
+## 🔹 Chapter 9: `mkdir`
+
+Creates directories.
+
+```bash
+mkdir notes
+```
+
+Create nested directories in one go with `-p`:
+
+```bash
+mkdir -p /root/projects/api/src
+```
+
+> 🎬 **Live Scenario:** Starting a new Terraform project?
+> ```bash
+> mkdir -p /root/projects/terraform/modules/network
+> ```
+> Linux creates every missing directory in one command.
+
+---
+
+## 🔹 Chapter 10: `cd`
+
+Changes directories.
+
+```bash
+cd /etc        # move into a directory
+cd notes       # move into a subfolder
+cd ..          # go back one level
+cd ~           # go home
+```
+
+> 🎬 **Live Scenario:** Editing Nginx config?
+> ```bash
+> cd /etc/nginx
+> ```
+> When you're done, just type `cd` to return home.
+
+### Typical Workflow
+
+```bash
+mkdir project
+cd project
+pwd
+ls
+```
+
+---
+
+## 🔹 Chapter 11: Redirecting Output (`>`)
+
+Instead of printing to the screen, redirect output into a file.
+
+```bash
+whoami > user.txt
+hostname > host.txt
+cat host.txt
+```
+
+**Output:**
+```
+prod-web01
+```
+
+> 🎬 **Live Scenario — Server Audit**
+>
+> ```bash
+> mkdir -p /root/answers
+> cd /root/answers
+>
+> whoami > user.txt
+> hostname > host.txt
+> uname -s > kernel.txt
+> ls / > root-listing.txt
+> cat /etc/os-release > os.txt
+> ```
+>
+> This creates five files you can share with the operations team or attach to a support ticket — no manual copy-pasting needed.
+
+---
+
+## 📋 Summary
+
+| Command | Purpose | Real-World Use |
+|---------|---------|-----------------|
+| `whoami` | Current user | Verify login before making changes |
+| `hostname` | Machine name | Confirm you're connected to the correct server |
+| `date` | Current date and time | Check timestamps for logs and scheduled tasks |
+| `uname -a` | Kernel and system info | Verify architecture and kernel version |
+| `echo` | Print text | Test scripts or display messages |
+| `pwd` | Current directory | Confirm where files will be created |
+| `ls` | List files and folders | Explore directories and verify file locations |
+| `cat` | Display file contents | Read configuration or system information files |
+| `mkdir` | Create directories | Organize projects and environments |
+| `cd` | Change directory | Navigate through the filesystem |
+| `>` | Redirect output to a file | Save command output for documentation or automation |
+
+---
+
+<p align="center">
+  ⭐ If this guide helped you, consider starring the repo! ⭐
+</p>
