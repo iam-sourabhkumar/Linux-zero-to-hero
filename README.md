@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1>🐧 Linux Zero to Hero</h1>
+<h1>🐧 Linux Basics</h1>
 
 <h3>Master Linux from Beginner to Advanced with Hands-on Labs & Real-World Examples</h3>
 
